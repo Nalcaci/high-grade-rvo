@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8853275576759303297}
   - component: {fileID: 330381923569944129}
   m_Layer: 0
-  m_Name: AgentSpawner1
+  m_Name: AgentSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 2543293670179380541}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 45, y: 1, z: -45}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -46,3 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agentPrefab: {fileID: 6316911314856322994, guid: 50a60a07bcba2cb43b1f32a9c7cb78df, type: 3}
   target: {fileID: 0}
+  colour:
+    serializedVersion: 2
+    rgba: 0
+  timer: 0.5
+  spawnAmount: 500
