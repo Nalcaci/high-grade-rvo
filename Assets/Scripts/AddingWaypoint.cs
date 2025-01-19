@@ -13,7 +13,7 @@ public class AddingWaypoint : MonoBehaviour
     public Vector3 target;
     public float deleteDistance = 1;
 
-    private bool debug = true;
+    private bool debug = false;
 
     void Update()
     {
@@ -23,7 +23,7 @@ public class AddingWaypoint : MonoBehaviour
         }
         else if (thisAgent.hasPath)
         {
-            //SmoothPath();
+            DrawPath();
         }
     }
 
@@ -47,9 +47,6 @@ public class AddingWaypoint : MonoBehaviour
 
     void SmoothPath()
     {
-
-
-
         List<Vector3> newCorners = new List<Vector3>();
 
         if (thisAgent.path.corners.Length < 2) { return; }
