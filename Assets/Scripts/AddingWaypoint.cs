@@ -2,8 +2,6 @@ using UnityEngine;
 using UnityEngine.AI;
 using Unity.Collections;
 using System.Collections.Generic;
-using Unity.Collections;
-using System.Collections.Generic;
 
 public class AddingWaypoint : MonoBehaviour
 {
@@ -12,12 +10,10 @@ public class AddingWaypoint : MonoBehaviour
 
     private LineRenderer pathRenderer;
 
-    private NavMeshPath agentPath;
-
-    private LineRenderer pathRenderer;
-
     public Vector3 target;
     public float deleteDistance = 1;
+
+    public float smoothingLength = 1;
 
     public Vector3[] pathLocations = new Vector3[0];
     [SerializeField]
@@ -32,11 +28,7 @@ public class AddingWaypoint : MonoBehaviour
         {
             this.gameObject.SetActive(false);
         }
-        else if (thisAgent.hasPath)
-        {
-            DrawPath();
-        }
-        else if (thisAgent.hasPath)
+        else if (pathLocations.Length > 0)
         {
             DrawPath();
         }
@@ -45,8 +37,8 @@ public class AddingWaypoint : MonoBehaviour
     void Start()
     {
         pathRenderer = GetComponent<LineRenderer>();
-        pathRenderer = GetComponent<LineRenderer>();
         thisAgent = GetComponent<NavMeshAgent>();
+        agentPath = new NavMeshPath();
 
         SetDestination();
 
@@ -60,7 +52,7 @@ public class AddingWaypoint : MonoBehaviour
         NavMesh.CalculatePath(this.transform.position, target, thisAgent.areaMask, agentPath);
         Vector3[] corners = agentPath.corners;
 
-        if (corners.Length <= 2)
+        if (corners.Length < 2)
         {
             pathLocations = corners;
             pathIndex = 0;
@@ -89,8 +81,8 @@ public class AddingWaypoint : MonoBehaviour
             Vector3 lastDirection = (position - lastPosition).normalized;
             Vector3 nextDirection = (nextPosition - position).normalized;
 
-            Vector3 startTangent = (lastDirection + nextDirection);
-            Vector3 endTangent = (lastDirection + nextDirection) * -1;
+            Vector3 startTangent = (lastDirection + nextDirection) * smoothingLength;
+            Vector3 endTangent = (lastDirection + nextDirection) * -1 * smoothingLength;
 
             curves[i].Points[0] = position;
             curves[i].Points[1] = position + startTangent;
@@ -102,7 +94,7 @@ public class AddingWaypoint : MonoBehaviour
             Vector3 nextDirection = (curves[1].EndPosition - curves[1].StartPosition).normalized;
             Vector3 lastDirection = (curves[0].EndPosition - curves[0].StartPosition).normalized;
 
-            curves[0].Points[2] = curves[0].Points[3] + (nextDirection + lastDirection) * -1;
+            curves[0].Points[2] = curves[0].Points[3] + (nextDirection + lastDirection) * -1 * smoothingLength;
         }
     }
 
@@ -126,14 +118,15 @@ public class AddingWaypoint : MonoBehaviour
 
     void DrawPath()
     {
-        pathRenderer.positionCount = thisAgent.path.corners.Length;
+        int numLocations = pathLocations.Length;
+        pathRenderer.positionCount = numLocations;
         pathRenderer.SetPosition(0, transform.position);
 
-        if(thisAgent.path.corners.Length < 2) { return; }
+        if(numLocations < 2) { return; }
 
-        for(int i = 1; i < thisAgent.path.corners.Length; i++)
+        for(int i = 1; i < numLocations; i++)
         {
-            Vector3 pointPosition = new Vector3(thisAgent.path.corners[i].x, thisAgent.path.corners[i].y, thisAgent.path.corners[i].z);
+            Vector3 pointPosition = new Vector3(pathLocations[i].x, pathLocations[i].y, pathLocations[i].z);
             pathRenderer.SetPosition(i, pointPosition);
         }
     }
