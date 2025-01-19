@@ -13,17 +13,34 @@ public class AddingWaypoint : MonoBehaviour
     public Vector3 target;
     public float deleteDistance = 1;
 
+    [SerializeField]
     public float smoothingLength = 1;
+    [SerializeField]
+    private int smoothingSections = 10;
 
     public Vector3[] pathLocations = new Vector3[0];
     [SerializeField]
     private int pathIndex = 0;
 
+    [Header("Movement Configuration")]
+    [SerializeField]
+    [Range(0, 0.99f)]
+    private float smoothing = 0.25f;
+    [SerializeField]
+    private float targetLerpSpeed = 1;
+
+    [SerializeField]
+    private Vector3 targetDirection;
+    private float lerpTime = 0;
+    [SerializeField]
+    private Vector3 movementVector;
 
     private bool debug = false;
 
     void Update()
     {
+        MoveAgent();
+
         if (Vector3.Distance(this.transform.position, target) <= deleteDistance)
         {
             this.gameObject.SetActive(false);
@@ -44,6 +61,47 @@ public class AddingWaypoint : MonoBehaviour
 
         Debug.Log("Setting destination to " + target);
         thisAgent.speed = Random.Range(2, 5);
+    }
+
+    private void MoveAgent()
+    {
+        if (pathIndex >= pathLocations.Length)
+        {
+            return;
+        }
+
+        if (Vector3.Distance(transform.position, pathLocations[pathIndex] + (thisAgent.baseOffset * Vector3.up)) <= thisAgent.radius)
+        {
+            pathIndex++;
+            lerpTime = 0;
+
+            if (pathIndex >= pathLocations.Length)
+            {
+                return;
+            }
+        }
+
+        movementVector = (pathLocations[pathIndex] + (thisAgent.baseOffset * Vector3.up) - transform.position).normalized;
+
+        targetDirection = Vector3.Lerp(
+            targetDirection,
+            movementVector,
+            Mathf.Clamp01(lerpTime * targetLerpSpeed * (1 - smoothing))
+        );
+
+        Vector3 lookDirection = movementVector;
+        if (lookDirection != Vector3.zero)
+        {
+            transform.rotation = Quaternion.Lerp(
+                transform.rotation,
+                Quaternion.LookRotation(lookDirection),
+                Mathf.Clamp01(lerpTime * targetLerpSpeed * (1 - smoothing))
+            );
+        }
+
+        thisAgent.Move(targetDirection * thisAgent.speed * Time.deltaTime);
+
+        lerpTime += Time.deltaTime;
     }
 
     private void SetDestination()
@@ -100,12 +158,12 @@ public class AddingWaypoint : MonoBehaviour
 
     private Vector3[] GetPathLocations(BezierCurve[] curves)
     {
-        Vector3[] pathLocations = new Vector3[curves.Length * 10];
+        Vector3[] pathLocations = new Vector3[curves.Length * smoothingSections];
 
         int index = 0;
         for (int i = 0; i < curves.Length; i++)
         {
-            Vector3[] segments = curves[i].GetSegments(10);
+            Vector3[] segments = curves[i].GetSegments(smoothingSections);
             for (int j = 0; j < segments.Length; j++)
             {
                 pathLocations[index] = segments[j];
