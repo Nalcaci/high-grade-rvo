@@ -2,10 +2,16 @@ using UnityEngine;
 using UnityEngine.AI;
 using Unity.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
+using System.Collections.Generic;
 
 public class AddingWaypoint : MonoBehaviour
 {
     private NavMeshAgent thisAgent;
+    private NavMeshPath agentPath;
+
+    private LineRenderer pathRenderer;
+
     private NavMeshPath agentPath;
 
     private LineRenderer pathRenderer;
@@ -30,10 +36,15 @@ public class AddingWaypoint : MonoBehaviour
         {
             DrawPath();
         }
+        else if (thisAgent.hasPath)
+        {
+            DrawPath();
+        }
     }
 
     void Start()
     {
+        pathRenderer = GetComponent<LineRenderer>();
         pathRenderer = GetComponent<LineRenderer>();
         thisAgent = GetComponent<NavMeshAgent>();
 
