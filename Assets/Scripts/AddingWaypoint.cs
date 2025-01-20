@@ -40,6 +40,8 @@ public class AddingWaypoint : MonoBehaviour
     private Vector3 movementVector;
     private Vector3 infinityVector = new Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity);
     private bool debug = false;
+    public bool useOriginalUnityRVO = false;
+    public float bezierNodeGoalDestination = 2f;
 
     void Update()
     {
@@ -61,7 +63,10 @@ public class AddingWaypoint : MonoBehaviour
         thisAgent = GetComponent<NavMeshAgent>();
         agentPath = new NavMeshPath();
 
-        SetDestination();
+        if (useOriginalUnityRVO)
+            thisAgent.SetDestination(target);
+        else
+            SetCustomDestination();
 
         Debug.Log("Setting destination to " + target);
         thisAgent.speed = Random.Range(2, 5);
@@ -74,7 +79,7 @@ public class AddingWaypoint : MonoBehaviour
             return;
         }
 
-        if (Vector3.Distance(transform.position, pathLocations[pathIndex] + (thisAgent.baseOffset * Vector3.up)) <= thisAgent.radius)
+        if (Vector3.Distance(transform.position, pathLocations[pathIndex] + (thisAgent.baseOffset * Vector3.up)) <= thisAgent.radius + bezierNodeGoalDestination)
         {
             pathIndex++;
             lerpTime = 0;
@@ -85,36 +90,20 @@ public class AddingWaypoint : MonoBehaviour
             }
         }
 
-        movementVector = (pathLocations[pathIndex] + (thisAgent.baseOffset * Vector3.up) - transform.position).normalized;
-
-        targetDirection = Vector3.Lerp(
-            targetDirection,
-            movementVector,
-            Mathf.Clamp01(lerpTime * targetLerpSpeed * (1 - smoothing))
-        );
-
-        Vector3 lookDirection = movementVector;
-        if (lookDirection != Vector3.zero)
-        {
-            transform.rotation = Quaternion.Lerp(
-                transform.rotation,
-                Quaternion.LookRotation(lookDirection),
-                Mathf.Clamp01(lerpTime * targetLerpSpeed * (1 - smoothing))
-            );
-        }
-
-        thisAgent.Move(targetDirection * thisAgent.speed * Time.deltaTime);
+        Debug.DrawLine(transform.position, pathLocations[pathIndex], Color.red, 1f);
+        //thisAgent.Move(targetDirection * thisAgent.speed * Time.deltaTime);
+        thisAgent.SetDestination(pathLocations[pathIndex]);
 
         lerpTime += Time.deltaTime;
     }
 
-    private void SetDestination()
+    private void SetCustomDestination()
     {
         thisAgent.ResetPath();
         NavMesh.CalculatePath(this.transform.position, target, thisAgent.areaMask, agentPath);
         Vector3[] corners = agentPath.corners;
 
-        if (corners.Length < 2)
+        if (corners.Length <= 2)
         {
             pathLocations = corners;
             pathIndex = 0;

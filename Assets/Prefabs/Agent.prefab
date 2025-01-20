@@ -150,13 +150,15 @@ MonoBehaviour:
   target: {x: 0, y: 0, z: 0}
   deleteDistance: 1
   smoothingLength: 5
-  smoothingSections: 20
+  smoothingSections: 10
+  smoothingFactor: 0
   pathLocations: []
   pathIndex: 0
   smoothing: 0.25
   targetLerpSpeed: 1
   targetDirection: {x: 0, y: 0, z: 0}
   movementVector: {x: 0, y: 0, z: 0}
+  useOriginalUnityRVO: 0
 --- !u!120 &8174677064471200797
 LineRenderer:
   serializedVersion: 2

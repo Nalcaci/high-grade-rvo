@@ -8,13 +8,16 @@ public class AgentSpawner:MonoBehaviour
     public Color32 color;
     public float timer = 0.5f;
     public int spawnAmount = 500;
+    public bool useOriginalUnityRVO = false;
     private int spawnCount = 0;
 
     void SpawnAgent(GameObject agentPrefab, Vector3 position, Quaternion rotation, Vector3 target, Color32 color)
     {
         GameObject agent = Object.Instantiate(agentPrefab, position+new Vector3(Random.Range(-10,10),0, Random.Range(-10, 10)), rotation);
         agent.name = "Agent";
-        agent.GetComponent<AddingWaypoint>().target = target;
+        AddingWaypoint agentBehaviour = agent.GetComponent<AddingWaypoint>();
+        agentBehaviour.target = target;
+        agentBehaviour.useOriginalUnityRVO = useOriginalUnityRVO;
         Renderer render = agent.GetComponent<Renderer>();
         render.material.color = color;
     }
