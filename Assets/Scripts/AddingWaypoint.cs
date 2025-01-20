@@ -45,7 +45,7 @@ public class AddingWaypoint : MonoBehaviour
 
     void Update()
     {
-        MoveAgent();
+        if (!useOriginalUnityRVO) MoveAgent();
 
         if (Vector3.Distance(this.transform.position, target) <= deleteDistance)
         {
