@@ -35,7 +35,7 @@ public class AddingWaypoint : MonoBehaviour
 
     [SerializeField]
     private Vector3 targetDirection;
-    private float lerpTime = 0;
+    private float pathIndexChangeTimer = 0;
     [SerializeField]
     private Vector3 movementVector;
     private Vector3 infinityVector = new Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity);
@@ -74,27 +74,26 @@ public class AddingWaypoint : MonoBehaviour
 
     private void MoveAgent()
     {
-        if (pathIndex >= pathLocations.Length)
-        {
-            return;
-        }
+        if (pathIndex >= pathLocations.Length) return;
 
         if (Vector3.Distance(transform.position, pathLocations[pathIndex] + (thisAgent.baseOffset * Vector3.up)) <= thisAgent.radius + bezierNodeGoalDestination)
         {
             pathIndex++;
-            lerpTime = 0;
-
-            if (pathIndex >= pathLocations.Length)
-            {
-                return;
-            }
+            pathIndexChangeTimer = 0;
         }
 
+        if (pathIndex > 0 && pathIndexChangeTimer > 1f && thisAgent.velocity.magnitude < 0.2f)
+        {
+            pathIndex++;
+            pathIndexChangeTimer = 0;
+        }
+
+        if (pathIndex >= pathLocations.Length) return;
+
         Debug.DrawLine(transform.position, pathLocations[pathIndex], Color.red, 1f);
-        //thisAgent.Move(targetDirection * thisAgent.speed * Time.deltaTime);
         thisAgent.SetDestination(pathLocations[pathIndex]);
 
-        lerpTime += Time.deltaTime;
+        pathIndexChangeTimer += Time.deltaTime;
     }
 
     private void SetCustomDestination()
