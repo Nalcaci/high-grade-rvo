@@ -41,6 +41,8 @@ public class AddingWaypoint : MonoBehaviour
     private Vector3 infinityVector = new Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity);
     private bool debug = false;
     public bool useOriginalUnityRVO = false;
+    public bool drawPath = true;
+    public bool drawVector = true;
     public float bezierNodeGoalDestination = 2f;
 
     void Update()
@@ -51,7 +53,7 @@ public class AddingWaypoint : MonoBehaviour
         {
             this.gameObject.SetActive(false);
         }
-        else if (pathLocations.Length > 0)
+        else if (pathLocations.Length > 0 && drawPath)
         {
             DrawPath();
         }
@@ -90,7 +92,7 @@ public class AddingWaypoint : MonoBehaviour
 
         if (pathIndex >= pathLocations.Length) return;
 
-        Debug.DrawLine(transform.position, pathLocations[pathIndex], Color.red, 1f);
+        if (drawVector) { Debug.DrawLine(transform.position, pathLocations[pathIndex], Color.red, 1f); }
         thisAgent.SetDestination(pathLocations[pathIndex]);
 
         pathIndexChangeTimer += Time.deltaTime;

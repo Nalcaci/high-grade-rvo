@@ -1,0 +1,10 @@
+.panel {
+}
+
+.menu {
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.unity-base-slider {
+}

@@ -1,0 +1,107 @@
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
+public class MenuController : MonoBehaviour
+{
+
+    public Toggle pathToggle;
+    public Toggle vectorToggle;
+
+    public Slider numberAgents;
+    public Slider smoothingSections;
+
+    [SerializeField]
+    private GameObject spawnerParent;
+
+    [SerializeField]
+    private GameObject agentPrefab;
+
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        Time.timeScale = 0;
+        //ui = GetComponent<UIDocument>().rootVisualElement;
+    }
+
+    public void OnResetButtonClicked()
+    {
+        ResetAgent();
+        SceneManager.LoadScene("PrototypeScene");
+    }
+
+
+    public void SetAgents()
+    {
+        foreach(AgentSpawner spawner in spawnerParent.GetComponentsInChildren<AgentSpawner>())
+        {
+            spawner.spawnAmount = (int)numberAgents.value;
+        }
+    }
+
+    public void TogglePath()
+    {
+        if (pathToggle.isOn == false)
+        {
+            agentPrefab.GetComponent<AddingWaypoint>().drawPath = false;
+            foreach (GameObject aliveAgent in GameObject.FindGameObjectsWithTag("Agent"))
+            {
+                aliveAgent.GetComponent<AddingWaypoint>().drawPath = false;
+                aliveAgent.GetComponent<LineRenderer>().enabled = false;
+            }
+        }
+        else
+        {
+            agentPrefab.GetComponent<AddingWaypoint>().drawPath = true;
+            foreach (GameObject aliveAgent in GameObject.FindGameObjectsWithTag("Agent"))
+            {
+                aliveAgent.GetComponent<AddingWaypoint>().drawPath = true;
+                aliveAgent.GetComponent<LineRenderer>().enabled = true;
+
+            }
+        }
+
+    }
+
+    public void ToggleVector()
+    {
+
+        if (vectorToggle.isOn == false)
+        {
+            agentPrefab.GetComponent<AddingWaypoint>().drawVector = false;
+            foreach (GameObject aliveAgent in GameObject.FindGameObjectsWithTag("Agent"))
+            {
+                aliveAgent.GetComponent<AddingWaypoint>().drawVector = false;
+                //aliveAgent.GetComponent<LineRenderer>().enabled = false;
+            }
+        }
+        else
+        {
+            agentPrefab.GetComponent<AddingWaypoint>().drawVector = true;
+            foreach (GameObject aliveAgent in GameObject.FindGameObjectsWithTag("Agent"))
+            {
+                aliveAgent.GetComponent<AddingWaypoint>().drawVector = true;
+                //aliveAgent.GetComponent<LineRenderer>().enabled = true;
+
+            }
+        }
+
+    }
+
+    void OnApplicationQuit()
+    {
+        ResetAgent();
+    }
+
+    public void ResetAgent()
+    {
+        agentPrefab.GetComponent<AddingWaypoint>().drawPath = true;
+        agentPrefab.GetComponent<AddingWaypoint>().drawVector = true;
+    }
+
+    public void StartSimulation()
+    {
+        Time.timeScale = 1;
+    }
+}

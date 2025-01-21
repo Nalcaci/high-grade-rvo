@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/ToolMenu.uss?fileID=7433441132597879392&amp;guid=8c49d3bd9142643598954cc725fa280f&amp;type=3#ToolMenu" />
+    <ui:VisualElement name="Panel" class="panel" style="flex-grow: 1; color: rgba(238, 238, 238, 0.18);">
+        <ui:VisualElement name="Container" class="menu" style="flex-grow: 1; background-color: rgba(255, 239, 239, 0.25); flex-direction: column; width: 414px; align-self: flex-start;">
+            <ui:Label text="Simulation Settings" name="ToolText" style="color: rgb(255, 255, 255); font-size: 41px; bottom: 0; top: 18px; background-color: rgb(79, 79, 79); align-items: center; justify-content: center; align-self: center;" />
+            <ui:Toggle label="Display Path" name="PathToggle" style="top: 45px; color: rgb(255, 255, 255); font-size: 24px;" />
+            <ui:Toggle label="Direction Vector" name="VectorToggle" style="top: 60px; color: rgb(255, 255, 255); font-size: 24px;" />
+            <ui:Slider label="Smoothing Sections" value="42" high-value="100" inverted="false" direction="Horizontal" name="Slider" style="align-self: auto; top: 100px; color: rgb(255, 255, 255); -unity-text-outline-color: rgba(255, 255, 255, 0); font-size: 24px; background-color: rgba(255, 255, 255, 0); justify-content: flex-start; align-content: center; width: 382px; text-overflow: clip; -unity-text-align: upper-left; letter-spacing: -6px;" />
+            <ui:Slider label="Smoothing Factor" value="42" high-value="100" inverted="false" direction="Horizontal" name="Slider" style="align-self: auto; top: 100px; color: rgb(255, 255, 255); -unity-text-outline-color: rgba(255, 255, 255, 0); font-size: 24px; background-color: rgba(255, 255, 255, 0); justify-content: flex-start; align-content: center; width: 382px; text-overflow: clip; -unity-text-align: upper-left; letter-spacing: -6px;" />
+            <ui:Button text="Reset Simulation" selectable="true" name="ResetButton" style="top: 717px; justify-content: flex-start; align-items: auto; align-content: auto; align-self: auto; bottom: 0; position: relative; flex-direction: column; font-size: 24px; color: rgb(60, 47, 47);" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
