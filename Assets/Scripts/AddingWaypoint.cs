@@ -40,6 +40,7 @@ public class AddingWaypoint : MonoBehaviour
     private Vector3 movementVector;
     private Vector3 infinityVector = new Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity);
     private bool debug = false;
+    private float agentRadius;
     public bool useOriginalUnityRVO = false;
     public bool drawPath = true;
     public bool drawVector = true;
@@ -64,6 +65,7 @@ public class AddingWaypoint : MonoBehaviour
         pathRenderer = GetComponent<LineRenderer>();
         thisAgent = GetComponent<NavMeshAgent>();
         agentPath = new NavMeshPath();
+        agentRadius = thisAgent.radius;
 
         if (useOriginalUnityRVO)
             thisAgent.SetDestination(target);
@@ -82,11 +84,15 @@ public class AddingWaypoint : MonoBehaviour
         {
             pathIndex++;
             pathIndexChangeTimer = 0;
+            thisAgent.avoidancePriority = 50;
+            thisAgent.radius = agentRadius;
         }
 
-        if (pathIndex > 0 && pathIndexChangeTimer > 1f && thisAgent.velocity.magnitude < 0.2f)
+        if (pathIndex > 0 && pathIndexChangeTimer > 0.2f && thisAgent.velocity.magnitude < 0.2f)
         {
             pathIndex++;
+            thisAgent.avoidancePriority--;
+            if (thisAgent.radius > 0.1f) thisAgent.radius -= 0.1f; 
             pathIndexChangeTimer = 0;
         }
 
