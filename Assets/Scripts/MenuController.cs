@@ -17,12 +17,14 @@ public class MenuController : MonoBehaviour
     [SerializeField]
     private GameObject agentPrefab;
 
+    private int defaultSmoothing;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        defaultSmoothing = agentPrefab.GetComponent<AddingWaypoint>().smoothingSections;
         Time.timeScale = 0;
-        //ui = GetComponent<UIDocument>().rootVisualElement;
     }
 
     public void OnResetButtonClicked()
@@ -38,6 +40,12 @@ public class MenuController : MonoBehaviour
         {
             spawner.spawnAmount = (int)numberAgents.value;
         }
+    }
+
+
+    public void SetSmoothing()
+    {
+        agentPrefab.GetComponent<AddingWaypoint>().ChangeSmoothing((int)smoothingSections.value);
     }
 
     public void TogglePath()
@@ -73,7 +81,6 @@ public class MenuController : MonoBehaviour
             foreach (GameObject aliveAgent in GameObject.FindGameObjectsWithTag("Agent"))
             {
                 aliveAgent.GetComponent<AddingWaypoint>().drawVector = false;
-                //aliveAgent.GetComponent<LineRenderer>().enabled = false;
             }
         }
         else
@@ -82,7 +89,6 @@ public class MenuController : MonoBehaviour
             foreach (GameObject aliveAgent in GameObject.FindGameObjectsWithTag("Agent"))
             {
                 aliveAgent.GetComponent<AddingWaypoint>().drawVector = true;
-                //aliveAgent.GetComponent<LineRenderer>().enabled = true;
 
             }
         }
@@ -98,6 +104,7 @@ public class MenuController : MonoBehaviour
     {
         agentPrefab.GetComponent<AddingWaypoint>().drawPath = true;
         agentPrefab.GetComponent<AddingWaypoint>().drawVector = true;
+        agentPrefab.GetComponent<AddingWaypoint>().smoothingSections = defaultSmoothing;
     }
 
     public void StartSimulation()

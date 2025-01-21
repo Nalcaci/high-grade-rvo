@@ -17,7 +17,7 @@ public class AddingWaypoint : MonoBehaviour
     [SerializeField]
     public float smoothingLength = 1;
     [SerializeField]
-    private int smoothingSections = 10;
+    public int smoothingSections = 10;
     [SerializeField]
     [Range(-1, 1)]
     private float smoothingFactor = 0;
@@ -279,4 +279,8 @@ public class AddingWaypoint : MonoBehaviour
         }
     }
 
+    public void ChangeSmoothing(int updatedSections)
+    {
+        smoothingSections = updatedSections;
+    }
 }
