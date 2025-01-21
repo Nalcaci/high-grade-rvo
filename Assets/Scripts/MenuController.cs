@@ -24,13 +24,15 @@ public class MenuController : MonoBehaviour
     void Start()
     {
         defaultSmoothing = agentPrefab.GetComponent<AddingWaypoint>().smoothingSections;
+        SetAgents();
+        SetSmoothing();
         Time.timeScale = 0;
     }
 
     public void OnResetButtonClicked()
     {
         ResetAgent();
-        SceneManager.LoadScene("PrototypeScene");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
 
