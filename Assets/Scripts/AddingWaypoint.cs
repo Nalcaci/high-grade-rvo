@@ -72,7 +72,7 @@ public class AddingWaypoint : MonoBehaviour
         else
             SetCustomDestination();
 
-        Debug.Log("Setting destination to " + target);
+        //Debug.Log("Setting destination to " + target);
         thisAgent.speed = Random.Range(2, 5);
     }
 
@@ -202,7 +202,7 @@ public class AddingWaypoint : MonoBehaviour
             {
                 Vector3 segmentDirection = (Path[index] - Path[lastIndex]).normalized;
                 float dot = Vector3.Dot(targetDirection, segmentDirection);
-                Debug.Log($"Target Direction: {targetDirection}. segment direction: {segmentDirection} = dot {dot} with index {index} & lastIndex {lastIndex}");
+                //Debug.Log($"Target Direction: {targetDirection}. segment direction: {segmentDirection} = dot {dot} with index {index} & lastIndex {lastIndex}");
                 if (dot <= smoothingFactor)
                 {
                     Path[index] = infinityVector;
@@ -222,7 +222,7 @@ public class AddingWaypoint : MonoBehaviour
 
         Vector3[] TrimmedPath = Path.Except(new Vector3[] { infinityVector }).ToArray();
 
-        Debug.Log($"Original Smoothed Path: {Path.Length}. Trimmed Path: {TrimmedPath.Length}");
+        //Debug.Log($"Original Smoothed Path: {Path.Length}. Trimmed Path: {TrimmedPath.Length}");
 
         return TrimmedPath;
     }
