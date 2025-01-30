@@ -262,6 +262,9 @@ MonoBehaviour:
   smoothingLength: 5
   smoothingSections: 5
   smoothingFactor: 0
+  displaceCorner: 0
+  maxDisplacement: 3
+  displacementAttempts: 20
   pathLocations: []
   pathIndex: 0
   smoothing: 0.25

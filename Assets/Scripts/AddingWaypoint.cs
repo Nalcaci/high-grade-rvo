@@ -22,6 +22,14 @@ public class AddingWaypoint : MonoBehaviour
     [Range(-1, 1)]
     private float smoothingFactor = 0;
 
+    [SerializeField]
+    public bool displaceCorner = false;
+    [SerializeField]
+    [Range(0, 5)]
+    public float maxDisplacement = 1;
+    [SerializeField]
+    public int displacementAttempts = 20;
+
     public Vector3[] pathLocations = new Vector3[0];
     [SerializeField]
     private int pathIndex = 0;
@@ -92,7 +100,7 @@ public class AddingWaypoint : MonoBehaviour
         {
             pathIndex++;
             thisAgent.avoidancePriority--;
-            if (thisAgent.radius > 0.1f) thisAgent.radius -= 0.1f; 
+            if (thisAgent.radius > 0.1f) thisAgent.radius -= 0.1f;
             pathIndexChangeTimer = 0;
         }
 
@@ -115,6 +123,42 @@ public class AddingWaypoint : MonoBehaviour
             pathLocations = corners;
             pathIndex = 0;
             return;
+        }
+        else if (displaceCorner)
+        {
+            float displacementRadius = Random.Range(0, maxDisplacement);
+            float displacementFactor = 0f;
+            for (int i = 1; i < corners.Length - 2; i++)
+            {
+                Vector3 prevToNextCornerDirection = (corners[i + 1] - corners[i - 1]).normalized;
+                Vector3 displacementDirection = Vector3.Cross(prevToNextCornerDirection, Vector3.up).normalized;
+
+                Vector3 prevToCurrentCornerDirection = (corners[i] - corners[i - 1]).normalized;
+                if (Vector3.Dot(prevToCurrentCornerDirection, displacementDirection) < 0)
+                {
+                    //Debug.Log("Inverting displacement direction");
+                    displacementDirection *= -1;
+                }
+
+                //Debug.Log($"Displacement radius {displacementRadius}");
+                float displacementStep = displacementRadius / displacementAttempts;
+                for (int j = 1; j < displacementAttempts + 1; j++)
+                {
+                    Vector3 samplePosition = corners[i] + (displacementDirection * j * displacementStep);
+                    if (NavMesh.SamplePosition(samplePosition, out NavMeshHit hit, thisAgent.radius, thisAgent.areaMask))
+                    {
+                        //Debug.Log($"{samplePosition}, {hit.position}, {j}, {displacementStep}, {(hit.position - corners[i]).magnitude}");
+                        displacementFactor = (hit.position - corners[i]).magnitude;
+                    }
+                    else
+                    {
+                        //Debug.Log($"Step {j} failed");
+                        break;
+                    }
+                }
+                //Debug.Log($"Displacement factor {displacementFactor}");
+                corners[i] += displacementDirection * displacementFactor;
+            }
         }
 
         BezierCurve[] curves = new BezierCurve[corners.Length - 1];

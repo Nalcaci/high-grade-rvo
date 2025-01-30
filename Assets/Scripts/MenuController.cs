@@ -10,6 +10,7 @@ public class MenuController : MonoBehaviour
 
     public Slider numberAgents;
     public Slider smoothingSections;
+    public Toggle displacementToggle;
 
     [SerializeField]
     private GameObject spawnerParent;
@@ -68,15 +69,12 @@ public class MenuController : MonoBehaviour
             {
                 aliveAgent.GetComponent<AddingWaypoint>().drawPath = true;
                 aliveAgent.GetComponent<LineRenderer>().enabled = true;
-
             }
         }
-
     }
 
     public void ToggleVector()
     {
-
         if (vectorToggle.isOn == false)
         {
             agentPrefab.GetComponent<AddingWaypoint>().drawVector = false;
@@ -91,10 +89,20 @@ public class MenuController : MonoBehaviour
             foreach (GameObject aliveAgent in GameObject.FindGameObjectsWithTag("Agent"))
             {
                 aliveAgent.GetComponent<AddingWaypoint>().drawVector = true;
-
             }
         }
+    }
 
+    public void ToggleDisplacement()
+    {
+        if (displacementToggle.isOn == false)
+        {
+            agentPrefab.GetComponent<AddingWaypoint>().displaceCorner = false;
+        }
+        else
+        {
+            agentPrefab.GetComponent<AddingWaypoint>().displaceCorner = true;
+        }
     }
 
     void OnApplicationQuit()
