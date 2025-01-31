@@ -34,9 +34,7 @@ public class MenuController : MonoBehaviour
     {
         defaultSmoothing = agentPrefab.GetComponent<AddingWaypoint>().smoothingSections;
         defaultDisplacement = agentPrefab.GetComponent<AddingWaypoint>().maxDisplacement;
-        SetDisplacement();
-        SetAgents();
-        SetSmoothing();
+
         Time.timeScale = 0;
     }
     private void Update()
@@ -69,6 +67,7 @@ public class MenuController : MonoBehaviour
     public void SetDisplacement()
     {
         agentPrefab.GetComponent<AddingWaypoint>().ChangeDisplacement((int)displacementAmount.value);
+        ToggleDisplacement();
     }
 
     public void TogglePath()
@@ -117,17 +116,17 @@ public class MenuController : MonoBehaviour
     {
         if (displacementAmount.value > 1)
         {
-            agentPrefab.GetComponent<AddingWaypoint>().displaceCorner = false;
+            agentPrefab.GetComponent<AddingWaypoint>().displaceCorner = true;
         }
         else
         {
-            agentPrefab.GetComponent<AddingWaypoint>().displaceCorner = true;
+            agentPrefab.GetComponent<AddingWaypoint>().displaceCorner = false;
         }
     }
 
     public void TogglePersonality()
     {
-        if (displacementAmount.value > 1)
+        if (personalityToggle.isOn == true)
         {
             agentPrefab.GetComponent<AddingWaypoint>().enablePersonality = false;
         }
@@ -148,12 +147,15 @@ public class MenuController : MonoBehaviour
         agentPrefab.GetComponent<AddingWaypoint>().drawVector = true;
         agentPrefab.GetComponent<AddingWaypoint>().smoothingSections = defaultSmoothing;
         agentPrefab.GetComponent<AddingWaypoint>().maxDisplacement = defaultDisplacement;
-        agentPrefab.GetComponent<AddingWaypoint>().displaceCorner = false;
+        agentPrefab.GetComponent<AddingWaypoint>().displaceCorner = true;
         agentPrefab.GetComponent<AddingWaypoint>().enablePersonality = true;
     }
 
     public void StartSimulation()
     {
+        SetDisplacement();
+        SetAgents();
+        SetSmoothing();
         Time.timeScale = 1;
     }
 

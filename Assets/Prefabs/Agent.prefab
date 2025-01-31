@@ -262,7 +262,7 @@ MonoBehaviour:
   smoothingLength: 5
   smoothingSections: 5
   smoothingFactor: 0
-  displaceCorner: 0
+  displaceCorner: 1
   maxDisplacement: 2.99
   displacementAttempts: 20
   pathLocations: []
@@ -274,6 +274,7 @@ MonoBehaviour:
   useOriginalUnityRVO: 0
   drawPath: 1
   drawVector: 1
+  enablePersonality: 1
   bezierNodeGoalDestination: 2
 --- !u!120 &8174677064471200797
 LineRenderer:
