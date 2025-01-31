@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -12,7 +13,6 @@ public class MenuController : MonoBehaviour
     public Slider smoothingSections;
     public Slider displacementAmount;
 
-    public Toggle displacementToggle;
     public Toggle personalityToggle;
 
     [SerializeField]
@@ -23,6 +23,10 @@ public class MenuController : MonoBehaviour
 
     private int defaultSmoothing;
     private float defaultDisplacement;
+
+    public TMP_Text currentAgents;
+    public TMP_Text currentSmoothing;
+    public TMP_Text displacement;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -35,7 +39,12 @@ public class MenuController : MonoBehaviour
         SetSmoothing();
         Time.timeScale = 0;
     }
-
+    private void Update()
+    {
+        currentAgents.text = numberAgents.value.ToString();
+        currentSmoothing.text = smoothingSections.value.ToString();
+        displacement.text = displacementAmount.value.ToString();
+    }
     public void OnResetButtonClicked()
     {
         ResetAgent();
@@ -106,7 +115,7 @@ public class MenuController : MonoBehaviour
 
     public void ToggleDisplacement()
     {
-        if (displacementToggle.isOn == false)
+        if (displacementAmount.value > 1)
         {
             agentPrefab.GetComponent<AddingWaypoint>().displaceCorner = false;
         }
@@ -118,7 +127,7 @@ public class MenuController : MonoBehaviour
 
     public void TogglePersonality()
     {
-        if (displacementToggle.isOn == false)
+        if (displacementAmount.value > 1)
         {
             agentPrefab.GetComponent<AddingWaypoint>().enablePersonality = false;
         }
