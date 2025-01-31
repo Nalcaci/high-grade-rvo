@@ -115,6 +115,7 @@ public class MenuController : MonoBehaviour
         agentPrefab.GetComponent<AddingWaypoint>().drawPath = true;
         agentPrefab.GetComponent<AddingWaypoint>().drawVector = true;
         agentPrefab.GetComponent<AddingWaypoint>().smoothingSections = defaultSmoothing;
+        agentPrefab.GetComponent<AddingWaypoint>().displaceCorner = false;
     }
 
     public void StartSimulation()
