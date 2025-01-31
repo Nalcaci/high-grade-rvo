@@ -128,11 +128,11 @@ public class MenuController : MonoBehaviour
     {
         if (personalityToggle.isOn == true)
         {
-            agentPrefab.GetComponent<AddingWaypoint>().enablePersonality = false;
+            agentPrefab.GetComponent<AddingWaypoint>().enablePersonality = true;
         }
         else
         {
-            agentPrefab.GetComponent<AddingWaypoint>().enablePersonality = true;
+            agentPrefab.GetComponent<AddingWaypoint>().enablePersonality = false;
         }
     }
 
