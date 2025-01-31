@@ -10,7 +10,10 @@ public class MenuController : MonoBehaviour
 
     public Slider numberAgents;
     public Slider smoothingSections;
+    public Slider displacementAmount;
+
     public Toggle displacementToggle;
+    public Toggle personalityToggle;
 
     [SerializeField]
     private GameObject spawnerParent;
@@ -19,12 +22,15 @@ public class MenuController : MonoBehaviour
     private GameObject agentPrefab;
 
     private int defaultSmoothing;
+    private float defaultDisplacement;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         defaultSmoothing = agentPrefab.GetComponent<AddingWaypoint>().smoothingSections;
+        defaultDisplacement = agentPrefab.GetComponent<AddingWaypoint>().maxDisplacement;
+        SetDisplacement();
         SetAgents();
         SetSmoothing();
         Time.timeScale = 0;
@@ -49,6 +55,11 @@ public class MenuController : MonoBehaviour
     public void SetSmoothing()
     {
         agentPrefab.GetComponent<AddingWaypoint>().ChangeSmoothing((int)smoothingSections.value);
+    }
+
+    public void SetDisplacement()
+    {
+        agentPrefab.GetComponent<AddingWaypoint>().ChangeDisplacement((int)displacementAmount.value);
     }
 
     public void TogglePath()
@@ -105,6 +116,18 @@ public class MenuController : MonoBehaviour
         }
     }
 
+    public void TogglePersonality()
+    {
+        if (displacementToggle.isOn == false)
+        {
+            agentPrefab.GetComponent<AddingWaypoint>().enablePersonality = false;
+        }
+        else
+        {
+            agentPrefab.GetComponent<AddingWaypoint>().enablePersonality = true;
+        }
+    }
+
     void OnApplicationQuit()
     {
         ResetAgent();
@@ -115,7 +138,9 @@ public class MenuController : MonoBehaviour
         agentPrefab.GetComponent<AddingWaypoint>().drawPath = true;
         agentPrefab.GetComponent<AddingWaypoint>().drawVector = true;
         agentPrefab.GetComponent<AddingWaypoint>().smoothingSections = defaultSmoothing;
+        agentPrefab.GetComponent<AddingWaypoint>().maxDisplacement = defaultDisplacement;
         agentPrefab.GetComponent<AddingWaypoint>().displaceCorner = false;
+        agentPrefab.GetComponent<AddingWaypoint>().enablePersonality = true;
     }
 
     public void StartSimulation()

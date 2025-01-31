@@ -52,6 +52,7 @@ public class AddingWaypoint : MonoBehaviour
     public bool useOriginalUnityRVO = false;
     public bool drawPath = true;
     public bool drawVector = true;
+    public bool enablePersonality = true;
     public float bezierNodeGoalDestination = 2f;
 
     void Update()
@@ -126,7 +127,16 @@ public class AddingWaypoint : MonoBehaviour
         }
         else if (displaceCorner)
         {
-            float displacementRadius = Random.Range(0, maxDisplacement);
+            float displacementRadius;
+            if (enablePersonality)
+            {
+                displacementRadius = Random.Range(0, maxDisplacement);
+            }
+            else
+            {
+                displacementRadius = maxDisplacement;
+            }
+
             float displacementFactor = 0f;
             for (int i = 1; i < corners.Length - 1; i++)
             {
@@ -332,5 +342,10 @@ public class AddingWaypoint : MonoBehaviour
     public void ChangeSmoothing(int updatedSections)
     {
         smoothingSections = updatedSections;
+    }
+
+    public void ChangeDisplacement(int displacement)
+    {
+        maxDisplacement = displacement;
     }
 }
