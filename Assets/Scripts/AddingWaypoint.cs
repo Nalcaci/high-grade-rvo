@@ -128,7 +128,7 @@ public class AddingWaypoint : MonoBehaviour
         {
             float displacementRadius = Random.Range(0, maxDisplacement);
             float displacementFactor = 0f;
-            for (int i = 1; i < corners.Length - 2; i++)
+            for (int i = 1; i < corners.Length - 1; i++)
             {
                 Vector3 prevToNextCornerDirection = (corners[i + 1] - corners[i - 1]).normalized;
                 Vector3 displacementDirection = Vector3.Cross(prevToNextCornerDirection, Vector3.up).normalized;
