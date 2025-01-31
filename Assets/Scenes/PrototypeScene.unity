@@ -2680,7 +2680,7 @@ PrefabInstance:
       objectReference: {fileID: 5838284679383698160}
     - target: {fileID: 753224238223769925, guid: 6dfe3ea3cc6d44d50aedc99282456bdf, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnResetButtonClicked
+      value: Quit
       objectReference: {fileID: 0}
     - target: {fileID: 2068021008676627839, guid: 6dfe3ea3cc6d44d50aedc99282456bdf, type: 3}
       propertyPath: m_Pivot.x
